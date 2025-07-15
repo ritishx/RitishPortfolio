@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ritish's 3D Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <!-- Three.js & GLTFLoader -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- GSAP for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+  <!-- BACKGROUND EFFECTS -->
+  <div class="bg-gradient"></div>
+  <div class="floating-elements">
+    <div class="floating-cube"></div>
+    <div class="floating-cube"></div>
+    <div class="floating-cube"></div>
+  </div>
+
+  <!-- NAV BAR -->
+  <div class="container">
+    <header>
+      <h1 class="logo">Ritish</h1>
+      <nav>
+        <a href="#about">ABOUT</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#contact">CONTACT</a>
+        <a href="resume.pdf" target="_blank">RESUME</a>
+        <a href="https://github.com/ritishx" target="_blank">GITHUB</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="content">
+        <div class="tag-box">
+          <div class="tag">RITISH &wreath;</div>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="highlight">FrontEnd</span> and <span class="highlight">BackEnd</span>
+          <br>Developer
+        </h1>
+
+        <div class="description">
+          <p>A passionate full-stack web developer and creative tech enthusiast skilled in HTML, CSS, JavaScript, PHP, and video editing. I love building intuitive user experiences, working with AI tools, and creating smart solutions that merge code with creativity. Always exploring, always learning.</p>
+        </div>
+
+        <div class="cta-buttons">
+          <a href="#projects" class="btn-primary">View Projects</a>
+          <a href="#contact" class="btn-secondary">Get In Touch</a>
+        </div>
+      </div>
+
+      <!-- 3D SPLINE VIEWER -->
+      <div class="spline-container">
+        <spline-viewer url="https://prod.spline.design/Ol-yCOgraTfngBRu/scene.splinecode"></spline-viewer>
+      </div>
+    </main>
+  </div>
+
+  <!-- 3D ROBOT SCENE -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.27/build/spline-viewer.js"></script>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="section">
+    <div class="section-content">
+      <div class="section-header">
+        <span class="section-tag">ABOUT</span>
+        <h2>About Me</h2>
+      </div>
+      <div class="about-content">
+        <p>Hey! I'm Ritish — a passionate developer skilled in HTML, CSS, JavaScript, PHP, and video editing tools like CapCut. I love building clean web experiences and exploring AI tools.</p>
+        <p>I'm currently working on AI assistants and building tools like Reels Schedulers and productivity dashboards. When I'm not coding, I'm learning, editing videos, or thinking about what to build next!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS SECTION -->
+  <section id="projects" class="section">
+    <div class="section-content">
+      <div class="section-header">
+        <span class="section-tag">PROJECTS</span>
+        <h2>Projects</h2>
+      </div>
+      <div id="project-list" class="project-grid"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="section">
+    <div class="section-content">
+      <div class="section-header">
+        <span class="section-tag">CONTACT</span>
+        <h2>Contact Me</h2>
+      </div>
+      <div class="contact-content">
+        <p>Interested in working together or have a cool idea? Let's chat!</p>
+        <div class="contact-links">
+          <a href="mailto:ritish.dev@gmail.com" class="contact-link">
+            <span>Email</span>
+            <span>ritishp.00@gmail.com</span>
+          </a>
+          <a href="https://github.com/ritishx" target="_blank" class="contact-link">
+            <span>GitHub</span>
+            <span>@ritishx</span>
+          </a>
+          <a href="https://instagram.com/_ritish_x" target="_blank" class="contact-link">
+            <span>Instagram</span>
+            <span>@_ritish_x</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Ritish Pandey · All rights reserved</p>
+  </footer>
+
+  <!-- GITHUB PROJECT FETCH -->
+  <script>
+    fetch("https://api.github.com/users/ritishx/repos")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("project-list");
+        data.forEach(repo => {
+          const card = document.createElement("div");
+          card.className = "project-card";
+          card.innerHTML = `
+            <div class="project-header">
+              <h3>${repo.name}</h3>
+              <div class="project-meta">
+                <span class="project-language">${repo.language || 'Code'}</span>
+              </div>
+            </div>
+            <p>${repo.description || "No description available."}</p>
+            <div class="project-footer">
+              <a href="${repo.html_url}" target="_blank" class="project-link">View on GitHub →</a>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      });
+
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+    
+    gsap.utils.toArray('.section').forEach(section => {
+      gsap.from(section, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+        }
+      });
+    });
+
+    // Floating elements animation
+    gsap.utils.toArray('.floating-cube').forEach((cube, i) => {
+      gsap.to(cube, {
+        y: -30,
+        duration: 3 + i,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+        delay: i * 0.5
+      });
+    });
+  </script>
+</body>
+
+</html>
